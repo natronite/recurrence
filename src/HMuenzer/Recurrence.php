@@ -22,7 +22,9 @@
     }
 **/
 
- class recurrence {
+namespace HMuenzer;
+
+ class Recurrence {
    protected $dtstart;                                 //VEVENT parameters
    protected $dtend;
    protected $rdate           = array();
