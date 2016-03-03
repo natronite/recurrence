@@ -97,12 +97,12 @@ class Recurrence
 
         try {
             if ($options['tzid']) {
-                $this->timezone = new DateTimeZone($options['tzid']);
+                $this->timezone = new \DateTimeZone($options['tzid']);
             }  //set timezone
             else {
-                $this->timezone = new DateTimeZone(date_default_timezone_get());
+                $this->timezone = new \DateTimeZone(date_default_timezone_get());
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error = true;
             return false;
         }
@@ -290,7 +290,7 @@ class Recurrence
                 ) == $this->explode("H-i-s", $this->dtend)
             ) {
                 $number_of_days = round(($this->dtend - $this->dtstart) / 86400);
-                $this->duration = new DateInterval("P" . $number_of_days . "D");
+                $this->duration = new \DateInterval("P" . $number_of_days . "D");
                 $this->dtend = null;
             } else {
                 $this->duration_time = $this->dtend - $this->dtstart;
@@ -470,7 +470,7 @@ class Recurrence
                     $limited_dates[] = $date;
                 }
                 if ($this->bysetpos) {
-                    $this->limit_bysetpos(& $limited_dates);
+                    $this->limit_bysetpos($limited_dates);
                 }                   //apply bysetpos
                 if ($this->exdate) {
                     $limited_dates = array_diff($limited_dates, $this->exdate);
@@ -542,7 +542,7 @@ class Recurrence
         $output['dtstart'] = $this->date($this->format, $start);                     //create output
 
         if ($duration) {
-            $this->datetime = new DateTime("@" . $start);
+            $this->datetime = new \DateTime("@" . $start);
             $this->datetime->setTimezone($this->timezone);
             $this->datetime->add($duration);
             $output['dtend'] = $this->datetime->format($this->format);
@@ -1159,7 +1159,7 @@ class Recurrence
         return false;
     }
 
-    protected function limit_bysetpos($limited_dates)
+    protected function limit_bysetpos(&$limited_dates)
     {
         $num = count($limited_dates);
         foreach ($this->bysetpos as $pos) {
@@ -1270,13 +1270,13 @@ class Recurrence
 
     protected function mktime($hour, $min, $sec, $mon, $day, $year)
     {
-        if (!$this->datetime instanceof DateTime) {
-            $this->datetime = new DateTime(null, $this->timezone);
+        if (!$this->datetime instanceof \DateTime) {
+            $this->datetime = new \DateTime(null, $this->timezone);
         }
         try {
             $this->datetime->setDate($year, $mon, $day);
             $this->datetime->setTime($hour, $min, $sec);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
         return $this->datetime->format("U");
@@ -1285,8 +1285,8 @@ class Recurrence
     protected function strtotime($time)
     {
         try {
-            $this->datetime = new DateTime($time, $this->timezone);
-        } catch (Exception $e) {
+            $this->datetime = new \DateTime($time, $this->timezone);
+        } catch (\Exception $e) {
             return false;
         }
         return $this->datetime->format("U");
@@ -1295,8 +1295,8 @@ class Recurrence
     protected function explode($format, $timestamp)
     {
         try {
-            $this->datetime = new DateTime('@' . $timestamp);
-        } catch (Exception $e) {
+            $this->datetime = new \DateTime('@' . $timestamp);
+        } catch (\Exception $e) {
             return false;
         }
         $this->datetime->setTimezone($this->timezone);
@@ -1306,8 +1306,8 @@ class Recurrence
     protected function date($format, $timestamp)
     {
         try {
-            $this->datetime = new DateTime('@' . $timestamp);
-        } catch (Exception $e) {
+            $this->datetime = new \DateTime('@' . $timestamp);
+        } catch (\Exception $e) {
             return false;
         }
         $this->datetime->setTimezone($this->timezone);
