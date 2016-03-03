@@ -411,6 +411,7 @@ class Recurrence
             return false;                                                                  //abort
         }
 
+        $safety_brake = 0;
         do {
             $this->iteration++;
             if (++$safety_brake > 1000) {
